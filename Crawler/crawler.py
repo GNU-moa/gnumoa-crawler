@@ -1,3 +1,6 @@
+import requests
+from bs4 import BeautifulSoup
+
 class Crawler:
     def __init__(self,
                  departmentName_ko,
@@ -7,18 +10,15 @@ class Crawler:
         self.departmentName_en = departmentName_en
         self.categoryTags = categoryTags
         
-    def getData(self):
+    def getUrls(self):
         for categoryTag in self.categoryTags:
             categoryName = categoryTag[0]
             mi = categoryTag[1]
             bbsId = categoryTag[2]
             baseUrl = f'https://www.gnu.ac.kr/{self.departmentName_en}/na/ntt/selectNttList.do?mi={mi}&bbsId={bbsId}'
-            print(baseUrl)
-
-ls = Crawler(
-    departmentName_ko = "생명공학부",
-    departmentName_en = "ls",
-    categoryTags = [["공지사항", 13180, 4048], ["장학", 11111, 4444]]
-)
-
-ls.getData()
+            print(self.do_html_crawl(baseUrl))
+    
+    def do_html_crawl(self, baseUrl):
+        request = requests.get(baseUrl)
+        parsed_html = BeautifulSoup(request.text, 'html.parser')
+        return parsed_html
