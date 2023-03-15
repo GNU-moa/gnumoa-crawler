@@ -1,3 +1,5 @@
+# 자연과학대학 config 파일
+
 from .crawler import Crawler
 
 ls = Crawler(
