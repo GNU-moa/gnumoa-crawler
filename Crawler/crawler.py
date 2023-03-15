@@ -13,11 +13,13 @@ class Crawler:
     def start_crawl(self):
         baseUrls = self.getBaseUrls()
         for baseUrl in baseUrls:
+            print(baseUrl)
             parsed_html = self.do_html_crawl(baseUrl)
+            self.get_posts(parsed_html, baseUrl)
         
         
     def getBaseUrls(self):
-        baseUrls = [];
+        baseUrls = []
         for categoryTag in self.categoryTags:
             categoryName = categoryTag[0]
             mi = categoryTag[1]
@@ -31,5 +33,21 @@ class Crawler:
         parsed_html = BeautifulSoup(request.text, 'html.parser')
         return parsed_html
 
-    def get_posts(self, parsed_html):
-        parsed_posts = parsed_html.select('#sub_content > div.subCntBody.clearfix > div.BD_list > table > tbody')
+    def get_posts(self, parsed_html,baseUrl):
+        getNums = parsed_html.find_all('td', {'class': 'BD_tm_none'})
+        CountIndex = 0 #필독 공지 걸러내기
+        for getNum in getNums:
+            text = getNum.text.strip()
+            if text != '공지':
+                break
+            CountIndex = CountIndex + 1
+
+        GetDataWords = parsed_html.find_all('a', {'class': 'nttInfoBtn'})
+
+        GetDataIds = []
+        for Word in GetDataWords:
+            GetDataIds.append(Word['data-id'])
+
+        for i in range(CountIndex, CountIndex+10):
+            postUrl = f'{baseUrl}&nttSn={GetDataIds[i]}'
+            print(postUrl)
