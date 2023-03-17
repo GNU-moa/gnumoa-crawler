@@ -33,7 +33,7 @@ class Crawler:
         parsed_html = BeautifulSoup(request.text, 'html.parser')
         return parsed_html
 
-    def get_posts(self, parsed_html,baseUrl):
+    def get_posts(self, parsed_html, baseUrl):
         getNums = parsed_html.find_all('td', {'class': 'BD_tm_none'})
         CountIndex = 0 #필독 공지 걸러내기
         for getNum in getNums:
@@ -49,5 +49,5 @@ class Crawler:
             GetDataIds.append(Word['data-id'])
 
         for i in range(CountIndex, CountIndex+10):
-            postUrl = f'{baseUrl}&nttSn={GetDataIds[i]}'
+            postUrl = f'{baseUrl.replace("selectNttList", "selectNttInfo")}&nttSn={GetDataIds[i]}'
             print(postUrl)
