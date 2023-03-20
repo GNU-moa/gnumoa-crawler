@@ -16,7 +16,7 @@ jobs:
       with:
         python-version: 3.x # Python 버전 선택
     - name: Get Firebase Credentials
-      run: echo "${{ secrets.FIREBASE_CREDENTIALS }}" | base64 -d > gnu-moa-firebase-adminsdk.json
+      run: echo FIREBASE_ADMIN_SDK | base64 -d > gnu-moa-firebase-adminsdk.json
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
