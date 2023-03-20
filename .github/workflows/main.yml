@@ -2,8 +2,8 @@ name: Schedule Crawler
 on:
   workflow_dispatch:
 env:
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  GITHUB_REPOSITORY: ${{ secrets.GITHUB_REPOSITORY }}
+  GITHUB_TOKEN: ${{ secrets.REPO_TOKEN }}
+  GITHUB_REPOSITORY: "GNU-moa/gnumoa-crawler"
 jobs:
   crawl:
     runs-on: ubuntu-latest
