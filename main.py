@@ -1,5 +1,6 @@
 from Crawler.cns import *
 from Crawler.firebase import db
+from Crawler.github_issue import github_issue
 
 import time
 
