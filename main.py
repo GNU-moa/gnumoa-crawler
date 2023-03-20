@@ -1,6 +1,5 @@
 from Crawler.cns import *
 from Crawler.firebase import db
-
 import time
 
 start_time = time.time()
