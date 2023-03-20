@@ -11,15 +11,12 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
-    - uses: actions/cache@v2
-      with:
-        path: ~/.cache/pip
-        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
-        restore-keys: ${{ runner.os }}-pip-
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
         python-version: 3.x # Python 버전 선택
+    - name: Get Firebase Credentials
+      run: echo "${{ secrets.FIREBASE_CREDENTIALS }}" | base64 -d > gnu-moa-firebase-adminsdk.json
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
