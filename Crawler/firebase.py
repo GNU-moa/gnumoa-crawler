@@ -6,7 +6,7 @@ import os
 import json
 
 if os.environ.get("FIREBASE_ADMIN_SDK"): # Github Actions에서 실행될 때
-    cred = credentials.Certificate(json.loads(os.environ.get("FIREBASE_ADMIN_SDK")))
+    cred = credentials.Certificate(json.loads(os.environ["FIREBASE_ADMIN_SDK"]))
     print(cred)
 else: # 로컬에서 실행될 때
   cred = credentials.Certificate(os.getcwd() + "/gnu-moa-firebase-adminsdk.json")
