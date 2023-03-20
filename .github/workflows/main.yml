@@ -4,6 +4,7 @@ on:
 env:
   GITHUB_TOKEN: ${{ secrets.REPO_TOKEN }}
   GITHUB_REPOSITORY: "GNU-moa/gnumoa-crawler"
+  FIREBASE_ADMIN_SDK: ${{ secrets.FIREBASE_ADMIN_SDK }}
 jobs:
   crawl:
     runs-on: ubuntu-latest
