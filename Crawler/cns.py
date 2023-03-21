@@ -1,5 +1,4 @@
 # 자연과학대학 config 파일
-
 from .crawler import Crawler
 
 ls = Crawler(
@@ -19,3 +18,5 @@ math = Crawler(
     departmentName_en = "math",
     categoryTags = [["공지사항", 4006, 1666]]
 )
+
+arrcns = [ls, physics, math]
