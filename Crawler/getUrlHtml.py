@@ -54,25 +54,16 @@ def get_title_and_context(text, postUrls):
 
 def savePostInfo(categoryName, department,AllInfo):
     for info in AllInfo:
-        doc_name = department.departmentName_en + '_' + info[1]
+        doc_name = department.departmentName_en + '_' + categoryName+'_'+ info[1]
         doc_post = db.collection(department.departmentName_en).document(doc_name)
         makeKey = {
             'Cur_Notice_Url' : info[0],
             'title' : info[2],
             'context' : info[3],
-            'categoryName' : categoryName
+            'categoryName' : categoryName,
         }
 
         doc_post.set(makeKey)
-
-def saveLastNum(department, categoryName, text):
-    doc_name = department.departmentName_en + '_' + categoryName
-    doc_lastNum = db.collection('lastNoticeNum').document(doc_name)
-    makeKey2 = {
-        'NoticeTitle' : categoryName,
-        'LastNum' : text
-    }
-    doc_lastNum.set(makeKey2)
 
 
 
