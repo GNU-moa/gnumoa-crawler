@@ -3,27 +3,31 @@ from .cns import arrcns
 from .getUrlHtml import *
 from .firebase import db
 
+def savePostInfo(department,categoryName, AllInfo):
+    for info in AllInfo:
+        doc_name = department.departmentName_en + '_' + categoryName+'_'+ info[1]
+        doc_post = db.collection(department.departmentName_en).document(doc_name)
+        makeKey = {
+            'Cur_Notice_Url' : info[0],
+            'title' : info[2],
+            'context' : info[3],
+            'categoryName' : categoryName,
+        }
+
+        print(doc_name)
+        print(info[2])
+        doc_post.set(makeKey)
+
 def Run():
     start_time = time.time()
-
-    updates = []
 
     for department in arrcns:
         i = 0
         categoryNames, baseUrls = department.getBaseUrls()
         for baseUrl in baseUrls:
-            updateInfo = []
-            collection_ref = len(db.collection(department.departmentName_en).where('categoryName', '==', categoryNames[i]).get())
             text, getPostUrls = get_posts(baseUrl)
-            savePostInfo(categoryNames[i],department, get_title_and_context(text, getPostUrls))
-            collection_ref2 = len(db.collection(department.departmentName_en).where('categoryName', '==', categoryNames[i]).get())
-            updateInfo.append(department.departmentName_en)
-            updateInfo.append(categoryNames[i])
-            updateInfo.append(collection_ref2-collection_ref)
+            savePostInfo(department,categoryNames[i], get_title_and_context(department,categoryNames[i] ,text, getPostUrls))
             i += 1
-            updates.append(updateInfo)
-
-    print(updates)
 
     print("--- 파싱 진행 시간: %s 초 ---" % (time.time() - start_time))
 
