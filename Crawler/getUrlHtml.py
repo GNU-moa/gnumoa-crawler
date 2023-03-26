@@ -30,7 +30,7 @@ def get_posts(baseUrl):
     return text, getPostUrls
 
 def get_title_and_context(department, categoryName,text, postUrls):
-    all_ten_info = []
+    all_info = []
     for i in range(10):
         #Url을 html로 변환
         parsed_html = do_html_crawl(postUrls[i])
@@ -53,9 +53,21 @@ def get_title_and_context(department, categoryName,text, postUrls):
                 title_text = context.text.strip()
                 allText.append(title_text)
 
-            all_ten_info.append(allText)
+            ul_file = parsed_html.find('ul', {'class': 'file'})
+            li_tags = ul_file.find_all('li')
 
-    return all_ten_info
+            links = []
+            for li in li_tags:
+                a_tag = li.find('a')
+                if a_tag is not None:
+                    link = a_tag.get('href')
+                    links.append('https://www.gnu.ac.kr'+ link)
+
+            allText.append(links)
+
+            all_info.append(allText)
+
+    return all_info
 
 
 

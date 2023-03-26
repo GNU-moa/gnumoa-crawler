@@ -12,6 +12,7 @@ def savePostInfo(department,categoryName, AllInfo):
             'title' : info[2],
             'context' : info[3],
             'categoryName' : categoryName,
+            'links' : info[4]
         }
 
         print(doc_name)
