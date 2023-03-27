@@ -22,7 +22,6 @@ def Run(departments):
     start_time = time.time()
 
     for department in departments:
-        print(department)
         categoryNames, baseUrls = department.getBaseUrls()
         print(categoryNames)
         for baseUrl, categoryName in zip(baseUrls, categoryNames):
@@ -37,7 +36,7 @@ def Run(departments):
                     filename, line_no, func_name, source_code = line
                     print(f"{filename}:{line_no} 에서 {e.__class__.__name__} 발생")
 
-    print("--- 파싱 진행 시간: %s 초 ---" % (time.time() - start_time))
+        print(f"--- {department.departmentName_ko} 파싱 진행 시간: %s 초 ---" % (time.time() - start_time))
 
 
 
