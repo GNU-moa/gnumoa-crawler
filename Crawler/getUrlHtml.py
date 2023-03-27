@@ -29,40 +29,47 @@ def get_posts(baseUrl):
 
     return text, getPostUrls
 
-def get_title_and_context(text, postUrls):
-    all_ten_info = []
+def get_title_and_context(department, categoryName,text, postUrls):
+    all_info = []
     for i in range(10):
         #Url을 html로 변환
         parsed_html = do_html_crawl(postUrls[i])
 
-        # allText[0] = 공지 url , allText[1] = 공지 번호 , allText[2] = 공지 제목 , allText[3] = 공지 내용
-        allText = []
+        chkDoc = department.departmentName_en + '_' + categoryName+'_'+ str(int(text) - 9 + i)
+        doc_ref = db.collection(department.departmentName_en).document(chkDoc)
+        if doc_ref.get().exists:
+            pass
+        else:
+            # allText[0] = 공지 url , allText[1] = 공지 번호 , allText[2] = 공지 제목 , allText[3] = 공지 내용
+            allText = []
 
-        allText.append(postUrls[i])
-        allText.append(str(int(text) - 9 + i))
+            allText.append(postUrls[i])
+            allText.append(str(int(text) - 9 + i))
 
-        title = parsed_html.find("th", class_="title").get_text(strip=True)
-        allText.append(title)
+            title = parsed_html.find("th", class_="title").get_text(strip=True)
+            allText.append(title)
 
-        for context in parsed_html.find_all('tr', class_='cont'):
-            title_text = context.text.strip()
-            allText.append(title_text)
+            for context in parsed_html.find_all('tr', class_='cont'):
+                title_text = context.text.strip()
+                allText.append(title_text)
 
-        all_ten_info.append(allText)
+            ul_file = parsed_html.find('ul', {'class': 'file'})
+            li_tags = ul_file.find_all('li')
 
-    return all_ten_info
+            links = []
+            for li in li_tags:
+                a_tag = li.find('a')
+                if a_tag is not None:
+                    link = a_tag.get('href')
+                    links.append('https://www.gnu.ac.kr'+ link)
 
-def saveInfo(department,AllInfo):
-    for info in AllInfo:
-        doc_name = department.departmentName_en + '_' + info[1]
-        doc_ref = db.collection(department.departmentName_en).document(doc_name)
-        makeKey = {
-            'Cur_Notice_Url' : info[0],
-            'title' : info[2],
-            'context' : info[3]
-        }
+            allText.append(links)
 
-        doc_ref.set(makeKey)
+            all_info.append(allText)
+
+    return all_info
+
+
 
 
 
