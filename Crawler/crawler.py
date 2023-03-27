@@ -37,7 +37,6 @@ class Crawler:
             if text != '공지':
                 break
             CountIndex = CountIndex + 1
-
         GetDataWords = parsed_html.find_all('a', {'class': 'nttInfoBtn'})
 
         GetDataIds = []
@@ -46,8 +45,11 @@ class Crawler:
 
         getPostUrls = []
         for i in range(CountIndex, CountIndex + 10):
-            postUrl = f'{baseUrl.replace("selectNttList", "selectNttInfo")}&nttSn={GetDataIds[i]}'
-            getPostUrls.append(postUrl)
+            try:
+                postUrl = f'{baseUrl.replace("selectNttList", "selectNttInfo")}&nttSn={GetDataIds[i]}'
+                getPostUrls.append(postUrl)
+            except IndexError: # 게시판에 게시물이 10개 미만일 경우
+                pass
 
         return text, getPostUrls
 

@@ -1,6 +1,7 @@
 from Crawler.dataStore import Run
-from Crawler.cns import arrcns
+from Crawler import *
 
-Run(arrcns)
+#Run(arrcns) # 자연과학대학
+Run(arrinmun) # 인문대학
 
 
