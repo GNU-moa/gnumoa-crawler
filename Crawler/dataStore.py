@@ -3,7 +3,6 @@ import traceback
 from .firebase import db
 
 def savePostInfo(department, categoryName, AllInfo):
-    print(department, categoryName, AllInfo)
     for info in AllInfo:
         doc_name = department.departmentName_en + '_' + categoryName+'_'+ info[1]
         doc_post = db.collection(department.departmentName_en).document(doc_name)
@@ -29,7 +28,6 @@ def Run(departments):
         for baseUrl, categoryName in zip(baseUrls, categoryNames):
             try:
                 text, getPostUrls = department.get_posts(baseUrl)
-                print(categoryName, text, getPostUrls)
                 savePostInfo(department, categoryName, department.get_title_and_context(categoryName, text, getPostUrls))
             except Exception as e:
                 print(f"Failed to crawl {department.departmentName_ko} - {categoryName}: {e}")

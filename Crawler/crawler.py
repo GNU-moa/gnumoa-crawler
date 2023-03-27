@@ -55,11 +55,11 @@ class Crawler:
 
     def get_title_and_context(self, categoryName, text, postUrls):
         all_info = []
-        for i in range(10):
+        for i in range(len(postUrls)):
             #Url을 html로 변환
             parsed_html = self.do_html_crawl(postUrls[i])
-
-            chkDoc = self.departmentName_en + '_' + categoryName+'_'+ str(int(text) - 9 + i)
+            chkDoc = self.departmentName_en + '_' + categoryName + '_' + str(int(text) - (len(postUrls) - 1) + i)
+            print(chkDoc)
             doc_ref = db.collection(self.departmentName_en).document(chkDoc)
             if doc_ref.get().exists:
                 pass
@@ -68,7 +68,7 @@ class Crawler:
                 allText = []
 
                 allText.append(postUrls[i])
-                allText.append(str(int(text) - 9 + i))
+                allText.append(str(int(text) - (len(postUrls) - 1) + i))
 
                 title = parsed_html.find("th", class_="title").get_text(strip=True)
                 allText.append(title)
