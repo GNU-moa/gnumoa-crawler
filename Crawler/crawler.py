@@ -54,42 +54,46 @@ class Crawler:
         return text, getPostUrls
 
     def get_title_and_context(self, categoryName, text, postUrls):
-        all_info = []
-        for i in range(len(postUrls)):
-            #Url을 html로 변환
-            parsed_html = self.do_html_crawl(postUrls[i])
+        post_info_list = []
+        for i, post_url in enumerate(postUrls):
+            # Url을 html로 변환
+            parsed_html = self.do_html_crawl(post_url)
+
             chkDoc = self.departmentName_en + '_' + categoryName + '_' + str(int(text) - (len(postUrls) - 1) + i)
             print(chkDoc)
             doc_ref = db.collection(self.departmentName_en).document(chkDoc)
             if doc_ref.get().exists:
-                pass
+                continue
+
+            # allText[0] = 공지 url , allText[1] = 공지 번호 , allText[2] = 공지 제목 , allText[3] = 공지 내용
+            title = parsed_html.find("th", class_="title")
+            if title:
+                title = title.get_text(strip=True)
             else:
-                # allText[0] = 공지 url , allText[1] = 공지 번호 , allText[2] = 공지 제목 , allText[3] = 공지 내용
-                allText = []
+                title = ''
 
-                allText.append(postUrls[i])
-                allText.append(str(int(text) - (len(postUrls) - 1) + i))
+            contents = parsed_html.find_all('tr', class_='cont')
+            contents_texts = [c.text.strip() for c in contents]
 
-                title = parsed_html.find("th", class_="title").get_text(strip=True)
-                allText.append(title)
+            ul_file = parsed_html.find('ul', {'class': 'file'})
+            li_tags = ul_file.find_all('li')
 
-                for context in parsed_html.find_all('tr', class_='cont'):
-                    title_text = context.text.strip()
-                    allText.append(title_text)
+            links = []
+            for li in li_tags:
+                a_tag = li.find('a')
+                if a_tag is not None:
+                    link = a_tag.get('href')
+                    links.append('https://www.gnu.ac.kr'+ link)
 
-                ul_file = parsed_html.find('ul', {'class': 'file'})
-                li_tags = ul_file.find_all('li')
+            post_info = {
+                'Cur_Notice_Url': post_url,
+                'title': title,
+                'context': contents_texts,
+                'categoryName': categoryName,
+                'links': links
+            }
+            post_info_list.append(post_info)
+            doc_ref.set(post_info)
 
-                links = []
-                for li in li_tags:
-                    a_tag = li.find('a')
-                    if a_tag is not None:
-                        link = a_tag.get('href')
-                        links.append('https://www.gnu.ac.kr'+ link)
-
-                allText.append(links)
-
-                all_info.append(allText)
-
-        return all_info
+        return post_info_list
 
