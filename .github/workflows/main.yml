@@ -1,0 +1,26 @@
+name: Schedule Crawler
+on:
+  schedule:
+    - cron: "0 9-18 * * *"
+env:
+  GITHUB_TOKEN: ${{ secrets.REPO_TOKEN }}
+  GITHUB_REPOSITORY: "GNU-moa/gnumoa-crawler"
+jobs:
+  crawl:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.x # Python 버전 선택
+      - name: Get Firebase Credentials
+        run: echo ${{ secrets.FIREBASE_ADMIN_SDK }} | base64 -d > gnu-moa-firebase-adminsdk.json
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Run crawler
+        run: python main.py # 크롤링을 실행하는 스크립트 파일의 이름
+

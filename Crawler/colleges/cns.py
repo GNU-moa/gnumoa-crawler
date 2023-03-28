@@ -1,5 +1,5 @@
 # 자연과학대학 config 파일
-from .crawler import Crawler
+from ..crawler import Crawler
 
 ls = Crawler(
     departmentName_ko = "생명공학부",

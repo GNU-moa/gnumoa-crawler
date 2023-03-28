@@ -1,1 +1,4 @@
 firebase-admin
+python-dotenv
+PyGithub
+beautifulsoup4

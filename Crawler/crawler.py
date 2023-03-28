@@ -1,3 +1,7 @@
+import requests
+from bs4 import BeautifulSoup
+from .firebase import db
+
 class Crawler:
     def __init__(self,
                  departmentName_ko,
@@ -19,4 +23,77 @@ class Crawler:
             categoryNames.append(categoryName)
         return categoryNames, baseUrls
 
+    def do_html_crawl(self, Url):
+        request = requests.get(Url)
+        parsed_html = BeautifulSoup(request.text, 'html.parser')
+        return parsed_html
+
+    def get_posts(self, baseUrl):
+        parsed_html = self.do_html_crawl(baseUrl)
+        getNums = parsed_html.find_all('td', {'class': 'BD_tm_none'})
+        CountIndex = 0  # 필독 공지 걸러내기
+        for getNum in getNums:
+            text = getNum.text.strip()
+            if text != '공지':
+                break
+            CountIndex = CountIndex + 1
+        GetDataWords = parsed_html.find_all('a', {'class': 'nttInfoBtn'})
+
+        GetDataIds = []
+        for Word in GetDataWords:
+            GetDataIds.append(Word['data-id'])
+
+        getPostUrls = []
+        for i in range(CountIndex, CountIndex + 10):
+            try:
+                postUrl = f'{baseUrl.replace("selectNttList", "selectNttInfo")}&nttSn={GetDataIds[i]}'
+                getPostUrls.append(postUrl)
+            except IndexError: # 게시판에 게시물이 10개 미만일 경우
+                pass
+
+        return text, getPostUrls
+
+    def get_title_and_context(self, categoryName, text, postUrls):
+        post_info_list = []
+        for i, post_url in enumerate(postUrls):
+            # Url을 html로 변환
+            parsed_html = self.do_html_crawl(post_url)
+
+            chkDoc = self.departmentName_en + '_' + categoryName + '_' + str(int(text) - (len(postUrls) - 1) + i)
+            print(chkDoc)
+            doc_ref = db.collection(self.departmentName_en).document(chkDoc)
+            if doc_ref.get().exists:
+                continue
+
+            # allText[0] = 공지 url , allText[1] = 공지 번호 , allText[2] = 공지 제목 , allText[3] = 공지 내용
+            title = parsed_html.find("th", class_="title")
+            if title:
+                title = title.get_text(strip=True)
+            else:
+                title = ''
+
+            contents = parsed_html.find_all('tr', class_='cont')
+            contents_texts = [c.text.strip() for c in contents]
+
+            ul_file = parsed_html.find('ul', {'class': 'file'})
+            li_tags = ul_file.find_all('li')
+
+            links = []
+            for li in li_tags:
+                a_tag = li.find('a')
+                if a_tag is not None:
+                    link = a_tag.get('href')
+                    links.append('https://www.gnu.ac.kr'+ link)
+
+            post_info = {
+                'Cur_Notice_Url': post_url,
+                'title': title,
+                'context': contents_texts,
+                'categoryName': categoryName,
+                'links': links
+            }
+            post_info_list.append(post_info)
+            doc_ref.set(post_info)
+
+        return post_info_list
 
