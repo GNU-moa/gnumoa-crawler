@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 from .firebase import db
+from datetime import datetime
 
 class Crawler:
     def __init__(self,
@@ -65,7 +66,6 @@ class Crawler:
             if doc_ref.get().exists:
                 continue
 
-            # allText[0] = 공지 url , allText[1] = 공지 번호 , allText[2] = 공지 제목 , allText[3] = 공지 내용
             title = parsed_html.find("th", class_="title")
             if title:
                 title = title.get_text(strip=True)
@@ -84,13 +84,17 @@ class Crawler:
                 if a_tag is not None:
                     link = a_tag.get('href')
                     links.append('https://www.gnu.ac.kr'+ link)
-
+            
+            createdAt_string = parsed_html.select_one('div.BD_table > table > tbody > tr:nth-child(3) > td').text
+            createdAt = datetime.strptime(createdAt_string, '%Y.%m.%d')
+            
             post_info = {
-                'Cur_Notice_Url': post_url,
-                'title': title,
-                'context': contents_texts,
                 'categoryName': categoryName,
-                'links': links
+                'title': title,
+                'baseUrl': post_url,
+                'context': contents_texts,
+                'fileUrls': links,
+                'createdAt': createdAt,
             }
             post_info_list.append(post_info)
             doc_ref.set(post_info)
