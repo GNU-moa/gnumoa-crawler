@@ -9,6 +9,7 @@ def Run(departments):
         for baseUrl, categoryName in zip(baseUrls, categoryNames):
             try:
                 text, getPostUrls = department.get_posts(baseUrl)
+                getPostUrls.reverse() # 게시물을 최신순으로 정렬
                 department.get_title_and_context(categoryName, text, getPostUrls)
             except Exception as e:
                 print(f"Failed to crawl {department.departmentName_ko} - {categoryName}: {e}")

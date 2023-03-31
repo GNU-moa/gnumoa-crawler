@@ -5,9 +5,11 @@ from datetime import datetime
 
 class Crawler:
     def __init__(self,
+                 departmentCollege,
                  departmentName_ko,
                  departmentName_en,
                  categoryTags):
+        self.departmentCollege = departmentCollege
         self.departmentName_ko = departmentName_ko
         self.departmentName_en = departmentName_en
         self.categoryTags = categoryTags
@@ -60,9 +62,9 @@ class Crawler:
             # Url을 html로 변환
             parsed_html = self.do_html_crawl(post_url)
 
-            chkDoc = self.departmentName_en + '_' + categoryName + '_' + str(int(text) - (len(postUrls) - 1) + i)
-            print(chkDoc)
-            doc_ref = db.collection(self.departmentName_en).document(chkDoc)
+            idx = str(int(text) - (len(postUrls) - 1) + i)
+            print(self.departmentName_en + '_' + categoryName + '_' + idx)
+            doc_ref = db.collection(self.departmentCollege).document(self.departmentName_en).collection(categoryName).document(idx)
             if doc_ref.get().exists:
                 continue
 
@@ -89,7 +91,6 @@ class Crawler:
             createdAt = datetime.strptime(createdAt_string, '%Y.%m.%d')
             
             post_info = {
-                'categoryName': categoryName,
                 'title': title,
                 'baseUrl': post_url,
                 'context': contents_texts,
