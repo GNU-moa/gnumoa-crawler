@@ -8,9 +8,11 @@ def Run(departments):
         categoryNames, baseUrls = department.getBaseUrls()
         for baseUrl, categoryName in zip(baseUrls, categoryNames):
             try:
-                text, getPostUrls = department.get_posts(baseUrl)
+                CountIndex, GetDataIds, text = department.division_postInfo(baseUrl)
+                get_essentialUrls, getPostUrls = department.get_posts(CountIndex, baseUrl, GetDataIds)
                 getPostUrls.reverse() # 게시물을 최신순으로 정렬
-                department.get_title_and_context(categoryName, text, getPostUrls)
+                department.save_essential_Info(categoryName, GetDataIds, get_essentialUrls)
+                department.save_basic_Info(categoryName, text, getPostUrls)
             except Exception as e:
                 print(f"Failed to crawl {department.departmentName_ko} - {categoryName}: {e}")
                 tb = e.__traceback__
