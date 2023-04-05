@@ -73,7 +73,7 @@ class Crawler:
 
         contents = parsed_html.find_all('tr', class_='cont')  # html로
         contents = str(contents)
-        # contents_texts = [c.text.strip() for c in contents] #그냥 text로
+        contents_texts = [c.text.strip() for c in contents] #그냥 text로
 
         ul_file = parsed_html.find('ul', {'class': 'file'})
         li_tags = ul_file.find_all('li')
@@ -96,6 +96,7 @@ class Crawler:
         post_info = {
             'title': title,
             'baseUrl': post_url,
+            'summary': contents_texts,
             'context': contents[1: -1],
             'fileUrls': links,
             'createdAt': createdAt,
