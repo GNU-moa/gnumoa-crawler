@@ -24,4 +24,4 @@ math = Crawler(
     categoryTags = [["공지사항", 4006, 1666]]
 )
 
-arrcns = [ls, physics, math]
+arrcns = [ls,physics,math]

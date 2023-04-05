@@ -14,7 +14,7 @@ dokmun = Crawler(
     departmentCollege,
     departmentName_ko = "독어독문학과",
     departmentName_en = "dokmun",
-    categoryTags = [["학사", 7699, 2609], ["장학-등록", 7698, 2608], ["행사-기타", 7700, 2610], ["외국인 유학생 안내", 7701, 2611]]
+    categoryTags = [["학사", 7710, 2615], ["장학", 3973, 1649], ["행사", 3976, 1965], ["기타", 3977, 1653]]
 )
 
-arrinmun = [korea]
+arrinmun = [korea,dokmun]
