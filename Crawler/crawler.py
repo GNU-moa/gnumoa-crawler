@@ -35,9 +35,10 @@ class Crawler:
         parsed_html = self.do_html_crawl(baseUrl)
         getNums = parsed_html.find_all('td', {'class': 'BD_tm_none'})
         CountIndex = 0  # 필독 공지 걸러내기
+        division = ""
         for getNum in getNums:
-            text = getNum.text.strip()
-            if text != '공지':
+            division = getNum.text.strip()
+            if division != '공지':
                 break
             CountIndex = CountIndex + 1
         GetDataWords = parsed_html.find_all('a', {'class': 'nttInfoBtn'})
@@ -45,7 +46,7 @@ class Crawler:
         GetDataIds = []
         for Word in GetDataWords:
             GetDataIds.append(Word['data-id'])
-        return CountIndex, GetDataIds, text
+        return CountIndex, GetDataIds, division
 
     def get_posts(self, CountIndex, baseUrl, GetDataIds):
         get_essential_posts = []
@@ -107,6 +108,12 @@ class Crawler:
                 continue
             parsed_html = self.do_html_crawl(post_url)
             doc_ref.set(self.get_url_Info(parsed_html, post_url))
+            title = parsed_html.find("th", class_="title")
+            if title:
+                title = title.get_text(strip=True)
+            else:
+                title = ''
+            print(self.departmentName_en + " " + categoryName + " : " +title)
 
 
     def save_basic_Info(self, categoryName, text, postUrls):
@@ -119,5 +126,11 @@ class Crawler:
 
             parsed_html = self.do_html_crawl(post_url)
             doc_ref.set(self.get_url_Info(parsed_html, post_url))
+            title = parsed_html.find("th", class_="title")
+            if title:
+                title = title.get_text(strip=True)
+            else:
+                title = ''
+            print(self.departmentName_en + " " + categoryName + " : " + title)
 
 
