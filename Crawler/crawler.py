@@ -41,6 +41,7 @@ class Crawler:
             if division != '공지':
                 break
             CountIndex = CountIndex + 1
+
         GetDataWords = parsed_html.find_all('a', {'class': 'nttInfoBtn'})
 
         GetDataIds = []
@@ -64,7 +65,6 @@ class Crawler:
         return get_essential_posts, getPostUrls
 
     def get_url_Info(self, parsed_html, post_url):
-
         title = parsed_html.find("th", class_="title")
         if title:
             title = title.get_text(strip=True)
@@ -118,7 +118,6 @@ class Crawler:
 
     def save_basic_Info(self, categoryName, text, postUrls):
         for i, post_url in enumerate(postUrls):
-
             idx = str(int(text) - (len(postUrls) - 1) + i)
             doc_ref = db.collection(self.departmentCollege).document(self.departmentName_en).collection(categoryName).document(idx)
             if doc_ref.get().exists:
