@@ -64,7 +64,7 @@ class Crawler:
                 pass
         return get_essential_posts, getPostUrls
 
-    def get_url_Info(self, parsed_html, post_url):
+    def get_url_Info(self, parsed_html, post_url, categoryName):
         title = parsed_html.find("th", class_="title")
         if title:
             title = title.get_text(strip=True)
@@ -72,8 +72,8 @@ class Crawler:
             title = ''
 
         contents = parsed_html.find_all('tr', class_='cont')  # html로
-        contents = str(contents)
-        # contents_texts = [c.text.strip() for c in contents] #그냥 text로
+        getHtml = str(contents)
+        contents_texts = [c.text.strip() for c in contents] #그냥 text로
 
         ul_file = parsed_html.find('ul', {'class': 'file'})
         li_tags = ul_file.find_all('li')
@@ -96,9 +96,12 @@ class Crawler:
         post_info = {
             'title': title,
             'baseUrl': post_url,
-            'context': contents[1: -1],
+            'html': getHtml[1: -1],
+            'context' : contents_texts,
             'fileUrls': links,
             'createdAt': createdAt,
+            'major' : self.departmentName_ko,
+            'category' : categoryName
         }
         return post_info
     def save_essential_Info(self, categoryName, GetDataIds,  get_essentialUrls):
@@ -107,7 +110,7 @@ class Crawler:
             if doc_ref.get().exists:
                 continue
             parsed_html = self.do_html_crawl(post_url)
-            doc_ref.set(self.get_url_Info(parsed_html, post_url))
+            doc_ref.set(self.get_url_Info(parsed_html, post_url, categoryName))
             title = parsed_html.find("th", class_="title")
             if title:
                 title = title.get_text(strip=True)
@@ -124,7 +127,7 @@ class Crawler:
                 continue
 
             parsed_html = self.do_html_crawl(post_url)
-            doc_ref.set(self.get_url_Info(parsed_html, post_url))
+            doc_ref.set(self.get_url_Info(parsed_html, post_url, categoryName))
             title = parsed_html.find("th", class_="title")
             if title:
                 title = title.get_text(strip=True)
