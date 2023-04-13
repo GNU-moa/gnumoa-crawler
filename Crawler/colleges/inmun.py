@@ -25,7 +25,7 @@ korea = Crawler(
 )
 
 #공지를 왜 이렇게 세분화 해둔거지,,? 이렇게 되면 몇년 전 공지들도 들고와짐
-german = Crawler(
+dokmun = Crawler(
     departmentCollege,
     departmentName_ko = "독어독문학과",
     departmentName_en = "dokmun",
@@ -83,4 +83,4 @@ hanmun = Crawler(
 )
 
 #arrinmun = [german, hanmun]
-arrinmun = [engLiter, engLang, korea, german, russia, minsok, france, history, china, sophia, hanmun]
+arrinmun = [engLiter, engLang, korea, dokmun, russia, minsok, france, history, china, sophia, hanmun]

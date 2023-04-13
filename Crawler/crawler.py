@@ -65,11 +65,14 @@ class Crawler:
         return get_essential_posts, getPostUrls
 
     def get_url_Info(self, parsed_html, post_url, categoryName):
+
         title = parsed_html.find("th", class_="title")
         if title:
             title = title.get_text(strip=True)
         else:
             title = ''
+
+        print(self.departmentName_en + " " + categoryName + " : " + title)
 
         contents = parsed_html.find_all('tr', class_='cont')  # html로
         getHtml = str(contents)
@@ -109,15 +112,16 @@ class Crawler:
             doc_ref = db.collection(self.departmentCollege).document(self.departmentName_en).collection(categoryName).document(GetDataIds[i])
             if doc_ref.get().exists:
                 continue
-            parsed_html = self.do_html_crawl(post_url)
-            doc_ref.set(self.get_url_Info(parsed_html, post_url, categoryName))
-            title = parsed_html.find("th", class_="title")
-            if title:
-                title = title.get_text(strip=True)
-            else:
-                title = ''
-            print(self.departmentName_en + " " + categoryName + " : " +title)
 
+            parsed_html = self.do_html_crawl(post_url)
+
+            createdAt_string = parsed_html.select_one('div.BD_table > table > tbody > tr:nth-child(3) > td').text
+
+            if createdAt_string[:4] != '2023':
+               continue
+
+
+            doc_ref.set(self.get_url_Info(parsed_html, post_url, categoryName))
 
     def save_basic_Info(self, categoryName, text, postUrls):
         for i, post_url in enumerate(postUrls):
@@ -127,12 +131,11 @@ class Crawler:
                 continue
 
             parsed_html = self.do_html_crawl(post_url)
-            doc_ref.set(self.get_url_Info(parsed_html, post_url, categoryName))
-            title = parsed_html.find("th", class_="title")
-            if title:
-                title = title.get_text(strip=True)
-            else:
-                title = ''
-            print(self.departmentName_en + " " + categoryName + " : " + title)
 
+            createdAt_string = parsed_html.select_one('div.BD_table > table > tbody > tr:nth-child(3) > td').text
+
+            if createdAt_string[:4] != '2023':
+                continue
+
+            doc_ref.set(self.get_url_Info(parsed_html, post_url, categoryName))
 
