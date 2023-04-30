@@ -41,6 +41,7 @@ class Crawler:
             if division != '공지':
                 break
             CountIndex = CountIndex + 1
+
         GetDataWords = parsed_html.find_all('a', {'class': 'nttInfoBtn'})
 
         GetDataIds = []
@@ -63,7 +64,7 @@ class Crawler:
                 pass
         return get_essential_posts, getPostUrls
 
-    def get_url_Info(self, parsed_html, post_url):
+    def get_url_Info(self, parsed_html, post_url, categoryName):
 
         title = parsed_html.find("th", class_="title")
         if title:
@@ -71,9 +72,11 @@ class Crawler:
         else:
             title = ''
 
+        print(self.departmentName_en + " " + categoryName + " : " + title)
+
         contents = parsed_html.find_all('tr', class_='cont')  # html로
+        getHtml = str(contents)
         contents_texts = [c.text.strip() for c in contents] #그냥 text로
-        contents = str(contents)
 
         ul_file = parsed_html.find('ul', {'class': 'file'})
         li_tags = ul_file.find_all('li')
@@ -96,10 +99,12 @@ class Crawler:
         post_info = {
             'title': title,
             'baseUrl': post_url,
-            'summary': contents_texts,
-            'context': contents[1: -1],
+            'html': getHtml[1: -1],
+            'context' : contents_texts,
             'fileUrls': links,
             'createdAt': createdAt,
+            'major' : self.departmentName_ko,
+            'category' : categoryName
         }
         return post_info
     def save_essential_Info(self, categoryName, GetDataIds,  get_essentialUrls):
@@ -107,31 +112,30 @@ class Crawler:
             doc_ref = db.collection(self.departmentCollege).document(self.departmentName_en).collection(categoryName).document(GetDataIds[i])
             if doc_ref.get().exists:
                 continue
-            parsed_html = self.do_html_crawl(post_url)
-            doc_ref.set(self.get_url_Info(parsed_html, post_url))
-            title = parsed_html.find("th", class_="title")
-            if title:
-                title = title.get_text(strip=True)
-            else:
-                title = ''
-            print(self.departmentName_en + " " + categoryName + " : " +title)
 
+            parsed_html = self.do_html_crawl(post_url)
+
+            createdAt_string = parsed_html.select_one('div.BD_table > table > tbody > tr:nth-child(3) > td').text
+
+            if createdAt_string[:4] != '2023':
+               continue
+
+
+            doc_ref.set(self.get_url_Info(parsed_html, post_url, categoryName))
 
     def save_basic_Info(self, categoryName, text, postUrls):
         for i, post_url in enumerate(postUrls):
-
             idx = str(int(text) - (len(postUrls) - 1) + i)
             doc_ref = db.collection(self.departmentCollege).document(self.departmentName_en).collection(categoryName).document(idx)
             if doc_ref.get().exists:
                 continue
 
             parsed_html = self.do_html_crawl(post_url)
-            doc_ref.set(self.get_url_Info(parsed_html, post_url))
-            title = parsed_html.find("th", class_="title")
-            if title:
-                title = title.get_text(strip=True)
-            else:
-                title = ''
-            print(self.departmentName_en + " " + categoryName + " : " + title)
 
+            createdAt_string = parsed_html.select_one('div.BD_table > table > tbody > tr:nth-child(3) > td').text
+
+            if createdAt_string[:4] != '2023':
+                continue
+
+            doc_ref.set(self.get_url_Info(parsed_html, post_url, categoryName))
 
