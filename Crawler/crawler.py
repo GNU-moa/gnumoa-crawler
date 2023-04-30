@@ -94,6 +94,10 @@ class Crawler:
                 links[linkName] = 'https://www.gnu.ac.kr' + linkUrl
 
         createdAt_string = parsed_html.select_one('div.BD_table > table > tbody > tr:nth-child(3) > td').text
+        if (len(createdAt_string) != 10):
+            createdAt_string = parsed_html.select_one('div.BD_table > table > tbody > tr:nth-child(2) > td').text
+
+
         createdAt = datetime.strptime(createdAt_string, '%Y.%m.%d')
 
         post_info = {
@@ -115,11 +119,13 @@ class Crawler:
 
             parsed_html = self.do_html_crawl(post_url)
 
+
             createdAt_string = parsed_html.select_one('div.BD_table > table > tbody > tr:nth-child(3) > td').text
+            if (len(createdAt_string) != 10):
+                createdAt_string = parsed_html.select_one('div.BD_table > table > tbody > tr:nth-child(2) > td').text
 
             if createdAt_string[:4] != '2023':
                continue
-
 
             doc_ref.set(self.get_url_Info(parsed_html, post_url, categoryName))
 
@@ -133,6 +139,9 @@ class Crawler:
             parsed_html = self.do_html_crawl(post_url)
 
             createdAt_string = parsed_html.select_one('div.BD_table > table > tbody > tr:nth-child(3) > td').text
+
+            if (len(createdAt_string) != 10):
+                createdAt_string = parsed_html.select_one('div.BD_table > table > tbody > tr:nth-child(2) > td').text
 
             if createdAt_string[:4] != '2023':
                 continue
