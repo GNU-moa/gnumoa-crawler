@@ -4,7 +4,7 @@ from firebase_admin import credentials
 from firebase_admin import firestore
 import os
 
-cred = credentials.Certificate("c://gnu-moa-firebase-adminsdk-93zd8-833e2f2ae5.json")
+cred = credentials.Certificate(os.getcwd() + "/gnu-moa-firebase-adminsdk.json")
 
 firebase_admin.initialize_app(cred)
 

@@ -80,4 +80,4 @@ marenv = Crawler(
     categoryTags = [["공지사항", 4546, 1818], ["취업정보",4554,1820]]
 )
 
-arrmarsci = [fba, mirae, sea, maripoli, gse, smartam, naoe, ace, seafood, oce, marenv]
+arrmarsci = [fba, mirae, sea, gse, smartam, naoe, ace, seafood, oce, marenv]
