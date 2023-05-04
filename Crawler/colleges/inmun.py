@@ -38,12 +38,12 @@ russia = Crawler(
     categoryTags = [["공지사항", 3286, 1463],["취업정보",3287,1464]]
 )
 
-minsok = Crawler(
-    departmentCollege,
-    departmentName_ko = "민속무용학과",
-    departmentName_en = "minsok",
-    categoryTags = [["공지사항", 3286, 1463]]
-)
+#minsok = Crawler(
+#    departmentCollege,
+#    departmentName_ko = "민속무용학과",
+#    departmentName_en = "minsok",
+#    categoryTags = [["공지사항", 3286, 1463]]
+#)
 
 france = Crawler(
     departmentCollege,
@@ -70,7 +70,7 @@ sophia = Crawler(
     departmentCollege,
     departmentName_ko = "철학과",
     departmentName_en = "sophia",
-    categoryTags = [["공지사항", 3257, 1458],["취업정보",13320,4089]]
+    categoryTags = [["공지사항", 10518, 1458],["취업정보",13320,4089]]
 )
 
 hanmun = Crawler(
@@ -80,4 +80,4 @@ hanmun = Crawler(
     categoryTags = [["학사공지", 10507, 3291], ["장학공지", 3362, 1503], ["취업공지", 3357, 1498], ["행사공지", 12295, 3779],["비교과프로그램", 13210, 4059]]
 )
 
-arrinmun = [engLiter, engLang, korea, dokmun, russia, minsok, france, history, china, sophia, hanmun]
+arrinmun = [engLiter, engLang, korea, dokmun, russia, france, history, china, sophia, hanmun]

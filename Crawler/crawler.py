@@ -33,21 +33,22 @@ class Crawler:
 
     def division_postInfo(self, baseUrl):
         parsed_html = self.do_html_crawl(baseUrl)
-        getNums = parsed_html.find_all('td', {'class': 'BD_tm_none'})
-        CountIndex = 0  # 필독 공지 걸러내기
-        division = ""
-        for getNum in getNums:
-            division = getNum.text.strip()
-            if division != '공지':
-                break
-            CountIndex = CountIndex + 1
+        getNums = parsed_html.find_all('b', {'class': 'btn_S btn_default'})
+        print(getNums)
+
+        getDivision = parsed_html.select('div.BD_list > table > tbody > tr:nth-child(' + str(len(getNums)+1)  + ') > td:nth-child(1)')
+        print(getDivision)
+        division = getDivision[0].text.strip()
 
         GetDataWords = parsed_html.find_all('a', {'class': 'nttInfoBtn'})
 
         GetDataIds = []
         for Word in GetDataWords:
             GetDataIds.append(Word['data-id'])
-        return CountIndex, GetDataIds, division
+
+        print(len(getNums), division)
+
+        return len(getNums), GetDataIds, division
 
     def get_posts(self, CountIndex, baseUrl, GetDataIds):
         get_essential_posts = []
@@ -64,6 +65,7 @@ class Crawler:
                 pass
         return get_essential_posts, getPostUrls
 
+
     def get_url_Info(self, parsed_html, post_url, categoryName):
 
         title = parsed_html.find("th", class_="title")
@@ -75,6 +77,7 @@ class Crawler:
         print(self.departmentName_en + " " + categoryName + " : " + title)
 
         contents = parsed_html.find_all('tr', class_='cont')  # html로
+
         getHtml = str(contents)
         contents_texts = [c.text.strip() for c in contents] #그냥 text로
 
