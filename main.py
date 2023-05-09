@@ -5,7 +5,7 @@ import time
 start_time = time.time()
 #Run(arrinmun) # 인문대학
 #Run(arrcss) # 사회과학대학
-Run(arrcns) # 자연과학대학
+#Run(arrcns) # 자연과학대학
 #Run(arrbiz) # 경영대학
 #Run(arrce) # 공과대학
 #Run(arrcals) # 농업생명과학대학

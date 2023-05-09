@@ -34,10 +34,9 @@ class Crawler:
     def division_postInfo(self, baseUrl):
         parsed_html = self.do_html_crawl(baseUrl)
         getNums = parsed_html.find_all('b', {'class': 'btn_S btn_default'})
-        print(getNums)
 
         getDivision = parsed_html.select('div.BD_list > table > tbody > tr:nth-child(' + str(len(getNums)+1)  + ') > td:nth-child(1)')
-        print(getDivision)
+
         division = getDivision[0].text.strip()
 
         GetDataWords = parsed_html.find_all('a', {'class': 'nttInfoBtn'})
@@ -45,8 +44,6 @@ class Crawler:
         GetDataIds = []
         for Word in GetDataWords:
             GetDataIds.append(Word['data-id'])
-
-        print(len(getNums), division)
 
         return len(getNums), GetDataIds, division
 
@@ -120,10 +117,15 @@ class Crawler:
             if doc_ref.get().exists:
                 continue
 
+            #미래자동차공학과 비밀글
+            if post_url == "https://www.gnu.ac.kr/car/na/ntt/selectNttInfo.do?mi=5865&bbsId=2131&nttSn=2117561":
+                continue
+
             parsed_html = self.do_html_crawl(post_url)
 
 
             createdAt_string = parsed_html.select_one('div.BD_table > table > tbody > tr:nth-child(3) > td').text
+
             if (len(createdAt_string) != 10):
                 createdAt_string = parsed_html.select_one('div.BD_table > table > tbody > tr:nth-child(2) > td').text
 

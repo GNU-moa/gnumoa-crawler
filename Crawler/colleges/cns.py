@@ -77,14 +77,14 @@ cs = Crawler(
     departmentCollege,
     departmentName_ko = "컴퓨터과학부 컴퓨터과학전공",
     departmentName_en = "cs",
-    categoryTags = [["공지사항", 6694, 2351],["취업정보",6696,2253]]
+    categoryTags = [["공지사항", 6694, 2351],["취업정보",6696,2353]]
 )
 
 cse = Crawler(
     departmentCollege,
     departmentName_ko = "컴퓨터과학부 컴퓨터소프트웨어전공",
     departmentName_en = "cse",
-    categoryTags = [["공지사항", 5550, 20048], ["공모전-대회",5554,2052]]
+    categoryTags = [["공지사항", 5550, 2048], ["공모전-대회",5554,2052]]
 )
 
 arrcns = [ls, physics, math, foodnutri, cloth, stat, pharmgine, geology, biomat, chem, cs, cse]

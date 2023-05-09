@@ -38,4 +38,5 @@ car = Crawler(
     categoryTags = [["공지사항", 5865, 2131], ["취업정보",5862,2128]]
 )
 
-arrcte = [mm, mecha, cele, energyeng, car]
+arrcte = [car]
+#arrcte = [mm, mecha, cele, energyeng, car]

@@ -15,7 +15,7 @@ me = Crawler(
     departmentCollege,
     departmentName_ko = "기계공학부",
     departmentName_en = "me",
-    categoryTags = [["공지사항", 6418, 2201], ["취업정보",6151,2204]]
+    categoryTags = [["공지사항", 6148, 2201], ["취업정보",6151,2204]]
 )
 
 polymer = Crawler(

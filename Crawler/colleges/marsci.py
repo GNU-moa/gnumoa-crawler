@@ -24,12 +24,12 @@ sea = Crawler(
     categoryTags = [["공지사항", 3112, 1405]]
 )
 
-maripoli = Crawler(
-    departmentCollege,
-    departmentName_ko = "해양경찰시스템학과",
-    departmentName_en = "maripoli",
-    categoryTags = [["공지사항", 3538, 1561], ["취업-장학",3542,1565]]
-)
+#maripoli = Crawler(
+#    departmentCollege,
+#    departmentName_ko = "해양경찰시스템학과",
+#    departmentName_en = "maripoli",
+#    categoryTags = [["공지사항", 3538, 1561], ["취업-장학",3542,1565]]
+#)
 
 gse = Crawler(
     departmentCollege,
@@ -80,4 +80,5 @@ marenv = Crawler(
     categoryTags = [["공지사항", 4546, 1818], ["취업정보",4554,1820]]
 )
 
-arrmarsci = [fba, mirae, sea, maripoli, gse, smartam, naoe, ace, seafood, oce, marenv]
+
+arrmarsci = [fba, mirae, sea, gse, smartam, naoe, ace, seafood, oce, marenv]
