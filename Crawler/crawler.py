@@ -33,21 +33,19 @@ class Crawler:
 
     def division_postInfo(self, baseUrl):
         parsed_html = self.do_html_crawl(baseUrl)
-        getNums = parsed_html.find_all('td', {'class': 'BD_tm_none'})
-        CountIndex = 0  # 필독 공지 걸러내기
-        division = ""
-        for getNum in getNums:
-            division = getNum.text.strip()
-            if division != '공지':
-                break
-            CountIndex = CountIndex + 1
+        getNums = parsed_html.find_all('b', {'class': 'btn_S btn_default'})
+
+        getDivision = parsed_html.select('div.BD_list > table > tbody > tr:nth-child(' + str(len(getNums)+1)  + ') > td:nth-child(1)')
+
+        division = getDivision[0].text.strip()
 
         GetDataWords = parsed_html.find_all('a', {'class': 'nttInfoBtn'})
 
         GetDataIds = []
         for Word in GetDataWords:
             GetDataIds.append(Word['data-id'])
-        return CountIndex, GetDataIds, division
+
+        return len(getNums), GetDataIds, division
 
     def get_posts(self, CountIndex, baseUrl, GetDataIds):
         get_essential_posts = []
@@ -64,6 +62,7 @@ class Crawler:
                 pass
         return get_essential_posts, getPostUrls
 
+
     def save_url_Info(self, doc_ref, parsed_html, post_url, categoryName):
         createdAt_string = parsed_html.select_one('div.BD_table > table > tbody > tr:nth-child(3) > td').text
         #작성자 없을 때 예외처리
@@ -71,7 +70,7 @@ class Crawler:
             createdAt_string = parsed_html.select_one('div.BD_table > table > tbody > tr:nth-child(2) > td').text
         if createdAt_string[:4] != '2023':
             return
-        
+
         title = parsed_html.find("th", class_="title")
         if title:
             title = title.get_text(strip=True)
@@ -81,6 +80,7 @@ class Crawler:
         print(self.departmentName_en + " " + categoryName + " : " + title)
 
         contents = parsed_html.find_all('tr', class_='cont')  # html로
+
         getHtml = str(contents)
         contents_texts = [c.text.strip() for c in contents] #그냥 text로
 
@@ -119,8 +119,19 @@ class Crawler:
             doc_ref = db.collection(self.departmentCollege).document(self.departmentName_en).collection(categoryName).document(GetDataIds[i])
             if doc_ref.get().exists:
                 continue
+
             parsed_html = self.do_html_crawl(post_url)
             self.save_url_Info(doc_ref, parsed_html, post_url, categoryName)
+
+            #미래자동차공학과 비밀글
+            if post_url == "https://www.gnu.ac.kr/car/na/ntt/selectNttInfo.do?mi=5865&bbsId=2131&nttSn=2117561":
+                continue
+
+            parsed_html = self.do_html_crawl(post_url)
+
+
+            doc_ref.set(self.get_url_Info(parsed_html, post_url, categoryName))
+
 
     def save_basic_Info(self, categoryName, text, postUrls):
         for i, post_url in enumerate(postUrls):

@@ -6,7 +6,7 @@ departmentCollege = "sadae"
 pedagogy = Crawler(
     departmentCollege,
     departmentName_ko = "교육학과",
-    departmentName_en = "padagogy",
+    departmentName_en = "pedagogy",
     categoryTags = [["공지사항", 4609, 1830], ["취업정보",4636,1851]]
 )
 

@@ -3,12 +3,6 @@ from ..crawler import Crawler
 
 departmentCollege = "cals"
 
-frecon = Crawler(
-    departmentCollege,
-    departmentName_ko = "식품자원경제학과",
-    departmentName_en = "frecon",
-    categoryTags = [["공지사항", 4122, 1685], ["취업정보",4127,1690]]
-)
 
 abit = Crawler(
     departmentCollege,
@@ -28,7 +22,7 @@ hortic = Crawler(
     departmentCollege,
     departmentName_ko = "원예과학부",
     departmentName_en = "hortic",
-    categoryTags = [["공지사항", 7496, 2029], ["취업정보",5782,2035]]
+    categoryTags = [["공지사항", 7496, 2029], ["취업정보",5482,2035]]
 )
 
 ase = Crawler(
@@ -94,4 +88,4 @@ agrieng = Crawler(
     categoryTags = [["공지사항", 5288, 1997], ["취업정보",11777,3632]]
 )
 
-arrcals = [frecon, abit, foodsci, hortic, ase, fr, agronomy, smartagro, ab, alc, ems, bime, agrieng]
+arrcals = [abit, foodsci, hortic, ase, fr, agronomy, smartagro, ab, alc, ems, bime, agrieng]
