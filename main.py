@@ -1,27 +1,38 @@
 from Crawler.dataStore import Run
+from multiprocessing import Process
 from Crawler import *
 import time
 
-start_time = time.time()
-#Run(arrinmun) # 인문대학
-#Run(arrcss) # 사회과학대학
-#Run(arrcns) # 자연과학대학
-#Run(arrbiz) # 경영대학
-#Run(arrce) # 공과대학
-#Run(arrcals) # 농업생명과학대학
-#Run(arrlaw) # 법과대학
-#Run(arrsadae) # 사범대학
-#Run(arrvet) # 수의과대학
-#Run(arrmedicine) # 의과대학
-#Run(arrcap) # 간호대학
-#Run(arrmarsci) # 해양과학대학
-#Run(arrpharm) # 약학대학
-#Run(arrmce) # 본부대학1
-#Run(arrcee) # 건설환경공과대학
-#Run(arrcte) # 융합기술공과대학
-#Run(arrhealthcare) # 본부대학2
+if __name__ == '__main__':
+    start_time = time.time()
+    
+    p1 = Process(target=Run, args=(arrinmun,))
+    p2 = Process(target=Run, args=(arrcss,))
+    p3 = Process(target=Run, args=(arrcns,))
+    p4 = Process(target=Run, args=(arrbiz,))
+    p5 = Process(target=Run, args=(arrce,))
+    p6 = Process(target=Run, args=(arrcals,))
+    p7 = Process(target=Run, args=(arrlaw,))
+    p8 = Process(target=Run, args=(arrsadae,))
+    p9 = Process(target=Run, args=(arrvet,))
+    p10 = Process(target=Run, args=(arrmedicine,))
+    p11 = Process(target=Run, args=(arrcap,))
+    p12 = Process(target=Run, args=(arrmarsci,))
+    p13 = Process(target=Run, args=(arrpharm,))
+    p14 = Process(target=Run, args=(arrmce,))
+    p15 = Process(target=Run, args=(arrcee,))
+    p16 = Process(target=Run, args=(arrcte,))
+    p17 = Process(target=Run, args=(arrhealthcare,))
+    
+    processes = [p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14, p15, p16, p17]
 
+    for p in processes:
+        p.start()
 
-print(f"--- 전체 학과 파싱 진행 시간: %s 초 ---" % (time.time() - start_time))
+    for p in processes:
+        p.join()
+
+    print(f"--- 전체 학과 파싱 진행 시간: %s 초 ---" % (time.time() - start_time))
+
 
 

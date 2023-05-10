@@ -63,7 +63,13 @@ class Crawler:
         return get_essential_posts, getPostUrls
 
 
-    def get_url_Info(self, parsed_html, post_url, categoryName):
+    def save_url_Info(self, doc_ref, parsed_html, post_url, categoryName):
+        createdAt_string = parsed_html.select_one('div.BD_table > table > tbody > tr:nth-child(3) > td').text
+        #작성자 없을 때 예외처리
+        if (len(createdAt_string) != 10):
+            createdAt_string = parsed_html.select_one('div.BD_table > table > tbody > tr:nth-child(2) > td').text
+        if createdAt_string[:4] != '2023':
+            return
 
         title = parsed_html.find("th", class_="title")
         if title:
@@ -93,11 +99,6 @@ class Crawler:
 
                 links[linkName] = 'https://www.gnu.ac.kr' + linkUrl
 
-        createdAt_string = parsed_html.select_one('div.BD_table > table > tbody > tr:nth-child(3) > td').text
-        if (len(createdAt_string) != 10):
-            createdAt_string = parsed_html.select_one('div.BD_table > table > tbody > tr:nth-child(2) > td').text
-
-
         createdAt = datetime.strptime(createdAt_string, '%Y.%m.%d')
 
         post_info = {
@@ -110,12 +111,17 @@ class Crawler:
             'major' : self.departmentName_ko,
             'category' : categoryName
         }
-        return post_info
-    def save_essential_Info(self, categoryName, GetDataIds,  get_essentialUrls):
+
+        doc_ref.set(post_info)
+    
+    def save_essential_Info(self, categoryName, GetDataIds, get_essentialUrls):
         for i, post_url in enumerate(get_essentialUrls):
             doc_ref = db.collection(self.departmentCollege).document(self.departmentName_en).collection(categoryName).document(GetDataIds[i])
             if doc_ref.get().exists:
                 continue
+
+            parsed_html = self.do_html_crawl(post_url)
+            self.save_url_Info(doc_ref, parsed_html, post_url, categoryName)
 
             #미래자동차공학과 비밀글
             if post_url == "https://www.gnu.ac.kr/car/na/ntt/selectNttInfo.do?mi=5865&bbsId=2131&nttSn=2117561":
@@ -124,15 +130,8 @@ class Crawler:
             parsed_html = self.do_html_crawl(post_url)
 
 
-            createdAt_string = parsed_html.select_one('div.BD_table > table > tbody > tr:nth-child(3) > td').text
-
-            if (len(createdAt_string) != 10):
-                createdAt_string = parsed_html.select_one('div.BD_table > table > tbody > tr:nth-child(2) > td').text
-
-            if createdAt_string[:4] != '2023':
-               continue
-
             doc_ref.set(self.get_url_Info(parsed_html, post_url, categoryName))
+
 
     def save_basic_Info(self, categoryName, text, postUrls):
         for i, post_url in enumerate(postUrls):
@@ -142,14 +141,4 @@ class Crawler:
                 continue
 
             parsed_html = self.do_html_crawl(post_url)
-
-            createdAt_string = parsed_html.select_one('div.BD_table > table > tbody > tr:nth-child(3) > td').text
-
-            if (len(createdAt_string) != 10):
-                createdAt_string = parsed_html.select_one('div.BD_table > table > tbody > tr:nth-child(2) > td').text
-
-            if createdAt_string[:4] != '2023':
-                continue
-
-            doc_ref.set(self.get_url_Info(parsed_html, post_url, categoryName))
-
+            self.save_url_Info(doc_ref, parsed_html, post_url, categoryName)
