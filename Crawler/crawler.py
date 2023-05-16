@@ -89,7 +89,6 @@ class Crawler:
 
 
         contents = parsed_html.find_all('tr', class_='cont')  # html로
-        print(contents)
 
         getHtml = str(contents)
 
