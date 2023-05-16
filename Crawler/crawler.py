@@ -79,9 +79,20 @@ class Crawler:
 
         print(self.departmentName_en + " " + categoryName + " : " + title)
 
+        get_imgs = parsed_html.find_all('img')
+
+        for img in get_imgs:
+            if not img['src'].startswith('https'):
+                img['src'] = 'https://www.gnu.ac.kr' + img['src']
+
+            img.attrs['style'] = 'width:100%'
+
+
         contents = parsed_html.find_all('tr', class_='cont')  # html로
+        print(contents)
 
         getHtml = str(contents)
+
         contents_texts = [c.text.strip() for c in contents] #그냥 text로
 
         ul_file = parsed_html.find('ul', {'class': 'file'})
@@ -120,17 +131,12 @@ class Crawler:
             if doc_ref.get().exists:
                 continue
 
-            parsed_html = self.do_html_crawl(post_url)
-            self.save_url_Info(doc_ref, parsed_html, post_url, categoryName)
-
-            #미래자동차공학과 비밀글
+            # 미래자동차공학과 비밀글
             if post_url == "https://www.gnu.ac.kr/car/na/ntt/selectNttInfo.do?mi=5865&bbsId=2131&nttSn=2117561":
                 continue
 
             parsed_html = self.do_html_crawl(post_url)
-
-
-            doc_ref.set(self.get_url_Info(parsed_html, post_url, categoryName))
+            self.save_url_Info(doc_ref, parsed_html, post_url, categoryName)
 
 
     def save_basic_Info(self, categoryName, text, postUrls):
