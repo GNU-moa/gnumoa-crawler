@@ -1,7 +1,6 @@
 name: Schedule Crawler
 on:
-  schedule:
-    - cron: "0 9-18 * * *"
+  workflow_dispatch:
 env:
   GITHUB_TOKEN: ${{ secrets.REPO_TOKEN }}
   GITHUB_REPOSITORY: "GNU-moa/gnumoa-crawler"
