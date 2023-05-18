@@ -31,12 +31,20 @@ psychology = Crawler(
     categoryTags = [["공지사항", 5603, 2061], ["취업정보",5606,2064]]
 )
 
+cfc = Crawler(
+    departmentCollege,
+    departmentName_ko="아동가족학과",
+    departmentName_en="cfc",
+    categoryTags= [["공지사항",4716,1882],["취업정보",4720,1885]]
+)
+
 polisci = Crawler(
     departmentCollege,
     departmentName_ko = "정치외교학과",
     departmentName_en = "polisci",
     categoryTags = [["공지사항", 3621, 1569], ["취업정보",3622,1570]]
 )
+
 
 pa = Crawler(
     departmentCollege,
@@ -45,4 +53,4 @@ pa = Crawler(
     categoryTags = [["공지사항", 5174, 1981], ["대외활동-취업정보",5177,1984]]
 )
 
-arrcss = [economics, socialwelfare, socio, psychology, polisci, pa]
+arrcss = [economics, socialwelfare, socio, psychology,cfc, polisci, pa]

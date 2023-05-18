@@ -24,13 +24,6 @@ sea = Crawler(
     categoryTags = [["공지사항", 3112, 1405]]
 )
 
-#maripoli = Crawler(
-#    departmentCollege,
-#    departmentName_ko = "해양경찰시스템학과",
-#    departmentName_en = "maripoli",
-#    categoryTags = [["공지사항", 3538, 1561], ["취업-장학",3542,1565]]
-#)
-
 gse = Crawler(
     departmentCollege,
     departmentName_ko = "기계시스템공학과",
