@@ -2,6 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 from .firebase import db
 from datetime import datetime
+from .sendUpdata import send_push_notification
 
 class Crawler:
     def __init__(self,
@@ -94,6 +95,7 @@ class Crawler:
 
         contents_texts = [c.text.strip() for c in contents] #그냥 text로
 
+
         ul_file = parsed_html.find('ul', {'class': 'file'})
         li_tags = ul_file.find_all('li')
 
@@ -115,14 +117,23 @@ class Crawler:
             'title': title,
             'baseUrl': post_url,
             'html': getHtml[1: -1],
-            'context' : contents_texts,
+            'context' : [contents_texts[0][:90]],
             'fileUrls': links,
             'createdAt': createdAt,
             'major' : self.departmentName_ko,
             'category' : categoryName
         }
-
         doc_ref.set(post_info)
+
+        tokens_ref = db.collection("Tokens")
+        docs = tokens_ref.get()
+        for doc in docs:
+            field_keys = doc.to_dict().keys()
+            for field_key in field_keys:
+                chk = db.collection("Tokens").document(doc.id).get().to_dict()
+                if("" != chk.get(field_key) and field_key == self.departmentName_ko):
+                    send_push_notification(doc.id, self.departmentName_ko, categoryName, title)
+
     
     def save_essential_Info(self, categoryName, GetDataIds, get_essentialUrls):
         for i, post_url in enumerate(get_essentialUrls):
