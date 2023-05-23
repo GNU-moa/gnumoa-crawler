@@ -1,7 +1,7 @@
-# 본부대학2 config 파일 완료
+# 사범대학 config 파일 완료
 from ..crawler import Crawler
 
-departmentCollege = "sadae"
+departmentCollege = "사범대학"
 
 pedagogy = Crawler(
     departmentCollege,

@@ -1,7 +1,7 @@
 #건설환경공과대학 config 파일 완료
 from ..crawler import Crawler
 
-departmentCollege = "cee"
+departmentCollege = "건설환경공과대학"
 
 civilinfra = Crawler(
     departmentCollege,

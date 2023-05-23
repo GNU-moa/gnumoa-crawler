@@ -1,7 +1,7 @@
 # 인문대학 config 파일 완료
 from ..crawler import Crawler
 
-departmentCollege = "inmun"
+departmentCollege = "인문대학"
 
 engLiter = Crawler(
     departmentCollege,
@@ -12,7 +12,7 @@ engLiter = Crawler(
 
 engLang = Crawler(
     departmentCollege,
-    departmentName_ko = "영어영문학과 영어전공",
+    departmentName_ko = "영어영문학부 영어전공",
     departmentName_en = "e_language",
     categoryTags = [["공지사항", 6201, 2219]]
 )

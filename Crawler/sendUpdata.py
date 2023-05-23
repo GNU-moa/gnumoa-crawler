@@ -5,7 +5,7 @@ import os
 
 # Firebase Admin SDK 초기화
 if not firebase_admin._apps:
-    cred = credentials.Certificate('path/to/serviceAccountKey.json')
+    cred = credentials.Certificate(os.getcwd() + "/gnu-moa-firebase-adminsdk.json")
     firebase_admin.initialize_app(cred)
 
 # 클라우드 메시지 보내기

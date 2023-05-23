@@ -1,7 +1,7 @@
 #해양과학대학 config 파일 완료
 from ..crawler import Crawler
 
-departmentCollege = "marsci"
+departmentCollege = "해양과학대학"
 
 fba = Crawler(
     departmentCollege,
@@ -40,7 +40,7 @@ smartam = Crawler(
 
 naoe = Crawler(
     departmentCollege,
-    departmentName_ko = "조선해양공학과",
+    departmentName_ko = "조선해양과학과",
     departmentName_en = "naoe",
     categoryTags = [["공지사항", 3419, 1533], ["취업정보",3416,1532]]
 )

@@ -1,7 +1,7 @@
 #농업생명과학대학 config 파일 완료
 from ..crawler import Crawler
 
-departmentCollege = "cals"
+departmentCollege = "농업생명과학대학"
 
 
 abit = Crawler(

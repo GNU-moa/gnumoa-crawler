@@ -1,11 +1,11 @@
 # 자연과학대학 config 파일 완료
 from ..crawler import Crawler
 
-departmentCollege = "cns"
+departmentCollege = "자연과학대학"
 
 ls = Crawler(
     departmentCollege,
-    departmentName_ko = "생명공학부",
+    departmentName_ko = "생명과학부",
     departmentName_en = "ls",
     categoryTags = [["공지사항", 13180, 4048]]
 )

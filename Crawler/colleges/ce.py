@@ -2,7 +2,7 @@
 #홈페이지 이상 세라믹공학전공, 전자공학과
 from ..crawler import Crawler
 
-departmentCollege = "ce"
+departmentCollege = "공과대학"
 
 archeng = Crawler(
     departmentCollege,
@@ -20,14 +20,14 @@ me = Crawler(
 
 polymer = Crawler(
     departmentCollege,
-    departmentName_ko = "고분자공학전공",
+    departmentName_ko = "나노·신소재공학부 고분자공학전공",
     departmentName_en = "polymer",
     categoryTags = [["공지사항", 10337, 3229], ["취업정보",7667,1677]]
 )
 
 metals = Crawler(
     departmentCollege,
-    departmentName_ko = "금속재료공학전공",
+    departmentName_ko = "나노·신소재공학부 금속재료공학전공",
     departmentName_en = "metals",
     categoryTags = [["공지사항", 3565, 1357], ["취업정보",3610,1358]]
 )

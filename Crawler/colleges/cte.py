@@ -1,7 +1,7 @@
 #융합기술공과대학 config 파일 완료
 from ..crawler import Crawler
 
-departmentCollege = "cte"
+departmentCollege = "융합기술공과대학"
 
 mm = Crawler(
     departmentCollege,

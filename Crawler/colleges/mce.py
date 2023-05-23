@@ -1,7 +1,7 @@
 # 본부대학1 config 파일 완료
 from ..crawler import Crawler
 
-departmentCollege = "mce"
+departmentCollege = "본부대학1"
 
 mce = Crawler(
     departmentCollege,

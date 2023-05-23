@@ -1,7 +1,7 @@
 #수의과대학 config 파일 완료
 from ..crawler import Crawler
 
-departmentCollege = "vet"
+departmentCollege = "수의과대학"
 
 vet = Crawler(
     departmentCollege,
