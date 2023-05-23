@@ -137,7 +137,7 @@ class Crawler:
     
     def save_essential_Info(self, categoryName, GetDataIds, get_essentialUrls):
         for i, post_url in enumerate(get_essentialUrls):
-            doc_ref = db.collection(self.departmentCollege).document(self.departmentName_en).collection(categoryName).document(GetDataIds[i])
+            doc_ref = db.collection(self.departmentCollege).document(self.departmentName_ko).collection(categoryName).document(GetDataIds[i])
             if doc_ref.get().exists:
                 continue
 
@@ -152,7 +152,7 @@ class Crawler:
     def save_basic_Info(self, categoryName, text, postUrls):
         for i, post_url in enumerate(postUrls):
             idx = str(int(text) - (len(postUrls) - 1) + i)
-            doc_ref = db.collection(self.departmentCollege).document(self.departmentName_en).collection(categoryName).document(idx)
+            doc_ref = db.collection(self.departmentCollege).document(self.departmentName_ko).collection(categoryName).document(idx)
             if doc_ref.get().exists:
                 continue
 

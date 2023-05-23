@@ -1,7 +1,7 @@
 #약학대학 config 파일 완료
 from ..crawler import Crawler
 
-departmentCollege = "pharm"
+departmentCollege = "약학대학"
 
 pharm = Crawler(
     departmentCollege,

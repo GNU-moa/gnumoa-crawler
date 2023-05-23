@@ -1,7 +1,7 @@
 #사회과학대학 config 파일 완료
 from ..crawler import Crawler
 
-departmentCollege = "css"
+departmentCollege = "사회과학대학"
 
 economics = Crawler(
     departmentCollege,
