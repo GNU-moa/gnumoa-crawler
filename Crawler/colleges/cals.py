@@ -13,7 +13,7 @@ abit = Crawler(
 
 foodsci = Crawler(
     departmentCollege,
-    departmentName_ko = "식품공학부",
+    departmentName_ko = "식품공학과",
     departmentName_en = "foodsci",
     categoryTags = [["공지사항", 10198, 3190], ["취업정보",5741,2092]]
 )
