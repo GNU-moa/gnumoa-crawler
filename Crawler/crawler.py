@@ -38,7 +38,10 @@ class Crawler:
 
         getDivision = parsed_html.select('div.BD_list > table > tbody > tr:nth-child(' + str(len(getNums)+1)  + ') > td:nth-child(1)')
 
-        division = getDivision[0].text.strip()
+        if (len(getDivision) == 0):
+            division = 0
+        else:
+            division = getDivision[0].text.strip()
 
         GetDataWords = parsed_html.find_all('a', {'class': 'nttInfoBtn'})
 
