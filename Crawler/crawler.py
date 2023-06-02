@@ -4,6 +4,7 @@ from .firebase import db
 from datetime import datetime
 from .sendUpdata import send_push_notification
 
+
 class Crawler:
     def __init__(self,
                  departmentCollege,
@@ -27,12 +28,12 @@ class Crawler:
             categoryNames.append(categoryName)
         return categoryNames, baseUrls
 
-    def do_html_crawl(self, Url):
+    def do_html_crawl(self, Url): #웹 페이지의 html내용 가져오기
         request = requests.get(Url)
         parsed_html = BeautifulSoup(request.text, 'html.parser')
         return parsed_html
 
-    def division_postInfo(self, baseUrl):
+    def division_postInfo(self, baseUrl): #필수 공지 및 일반 공지 구분
         parsed_html = self.do_html_crawl(baseUrl)
         getNums = parsed_html.find_all('b', {'class': 'btn_S btn_default'})
 
@@ -51,7 +52,7 @@ class Crawler:
 
         return len(getNums), GetDataIds, division
 
-    def get_posts(self, CountIndex, baseUrl, GetDataIds):
+    def get_posts(self, CountIndex, baseUrl, GetDataIds): #구분된 공지 url들 구하기
         get_essential_posts = []
         for i in range(CountIndex):
             postUrl = f'{baseUrl.replace("selectNttList", "selectNttInfo")}&nttSn={GetDataIds[i]}'
@@ -67,7 +68,7 @@ class Crawler:
         return get_essential_posts, getPostUrls
 
 
-    def save_url_Info(self, doc_ref, parsed_html, post_url, categoryName):
+    def save_url_Info(self, doc_ref, parsed_html, post_url, categoryName): #공지 정보 firebase에 저장 및 안드로이드 push 기능
         createdAt_string = parsed_html.select_one('div.BD_table > table > tbody > tr:nth-child(3) > td').text
         #작성자 없을 때 예외처리
         if (len(createdAt_string) != 10):
@@ -92,12 +93,11 @@ class Crawler:
             img.attrs['style'] = 'width:100%'
 
 
-        contents = parsed_html.find_all('tr', class_='cont')  # html로
+        contents = parsed_html.find_all('tr', class_='cont')
 
         getHtml = str(contents)
 
-        contents_texts = [c.text.strip() for c in contents] #그냥 text로
-
+        contents_texts = [c.text.strip() for c in contents]
 
         ul_file = parsed_html.find('ul', {'class': 'file'})
         li_tags = ul_file.find_all('li')
@@ -138,7 +138,7 @@ class Crawler:
                     send_push_notification(doc.id, self.departmentName_ko, categoryName, title)
 
     
-    def save_essential_Info(self, categoryName, GetDataIds, get_essentialUrls):
+    def save_essential_Info(self, categoryName, GetDataIds, get_essentialUrls): #업데이트 할 공지 구분하기 - 필수
         for i, post_url in enumerate(get_essentialUrls):
             doc_ref = db.collection(self.departmentCollege).document(self.departmentName_ko).collection(categoryName).document(GetDataIds[i])
             if doc_ref.get().exists:
@@ -152,7 +152,7 @@ class Crawler:
             self.save_url_Info(doc_ref, parsed_html, post_url, categoryName)
 
 
-    def save_basic_Info(self, categoryName, text, postUrls):
+    def save_basic_Info(self, categoryName, text, postUrls): #업데이트 할 공지 구분하기 - 일반
         for i, post_url in enumerate(postUrls):
             idx = str(int(text) - (len(postUrls) - 1) + i)
             doc_ref = db.collection(self.departmentCollege).document(self.departmentName_ko).collection(categoryName).document(idx)

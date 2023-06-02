@@ -1,4 +1,4 @@
-# firebase 관련 설정들을 모아둔 파일입니다.
+# firebase 관련 설정
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import firestore
